@@ -1,0 +1,40 @@
+.profile-box {
+    max-width: 400px;
+    margin: 60px auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .profile-box h2 {
+    color: #1f2937;
+  }
+  
+  .profile-box input {
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 16px;
+  }
+  
+  .profile-box button {
+    margin-top: 10px;
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .profile-box button:hover {
+    background-color: #dc2626;
+  }
+  
