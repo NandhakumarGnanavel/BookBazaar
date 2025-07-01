@@ -1,5 +1,5 @@
 .auth-container {
-  background-image: url('C:\Users\nandh\Downloads\second-hand-book\secondhand-books\public\18129294.jpg'); /* ✅ Your image here - put it in public/ */
+  background-image: url('../assets/bgg.jpg');  /* ✅ Your image here - put it in public/ */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

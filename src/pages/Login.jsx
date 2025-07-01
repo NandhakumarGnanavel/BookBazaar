@@ -6,6 +6,7 @@ import Lottie from 'lottie-react';
 import loginAnimation from '../animations/login-animation.json';
 import loginLeftAnimation from '../animations/login-left-animation.json';
 
+
 function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
