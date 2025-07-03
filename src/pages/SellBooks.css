@@ -1,5 +1,5 @@
 /* Modern Sell Books Page Styles */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght(300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap");
 
 .sell-books-wrapper {
   min-height: 100vh;
@@ -61,13 +61,14 @@
   animation-delay: 6s;
 }
 
+/* Simplified animations for better performance */
 @keyframes shapeFloat {
   0%,
   100% {
-    transform: translateY(0) rotate(0deg);
+    transform: translateY(0);
   }
   50% {
-    transform: translateY(-100px) rotate(180deg);
+    transform: translateY(-30px);
   }
 }
 
@@ -212,7 +213,7 @@
   border-radius: 12px;
   color: #ffffff;
   font-size: 0.95rem;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   font-family: "Inter", sans-serif;
 }
 
@@ -402,7 +403,7 @@
   font-weight: 600;
   font-size: 1.1rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
   font-family: "Poppins", sans-serif;
@@ -577,6 +578,22 @@
   .condition-label {
     text-align: center;
   }
+
+  /* Reduce background elements on mobile */
+  .floating-shapes {
+    display: none;
+  }
+
+  .background-elements {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  }
+
+  /* Remove heavy backdrop filters on mobile */
+  .sell-form-container,
+  .tips-container {
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.1);
+  }
 }
 
 @media (max-width: 480px) {
@@ -596,4 +613,23 @@
     padding: 1rem 1.5rem;
     font-size: 1rem;
   }
+}
+
+/* Optimize animations for mobile */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Faster transitions */
+.sell-form-container,
+.tips-sidebar,
+.form-group input,
+.form-group select,
+.form-group textarea,
+.submit-btn {
+  transition: all 0.2s ease;
 }

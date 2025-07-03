@@ -42,8 +42,17 @@ const SellBooks = () => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target
+
     if (name === "image" && files && files[0]) {
       const file = files[0]
+
+      // Validate file
+      const fileError = validateFile(file)
+      if (fileError) {
+        setErrors({ ...errors, [name]: fileError })
+        return
+      }
+
       setForm({ ...form, [name]: file })
 
       // Create preview
@@ -80,6 +89,21 @@ const SellBooks = () => {
     return Object.keys(newErrors).length === 0
   }
 
+  const validateFile = (file) => {
+    const maxSize = 5 * 1024 * 1024 // 5MB
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"]
+
+    if (file.size > maxSize) {
+      return "File size must be less than 5MB"
+    }
+
+    if (!allowedTypes.includes(file.type)) {
+      return "Only JPG, PNG, and WEBP files are allowed"
+    }
+
+    return null
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -92,52 +116,69 @@ const SellBooks = () => {
     setMessage("")
 
     try {
-      // Upload image
-      const imageName = `${Date.now()}_${form.image.name}`
-      const { error: uploadError } = await supabase.storage.from("book-images").upload(imageName, form.image)
-
-      if (uploadError) {
-        setMessage("Failed to upload image. Please try again.")
-        setIsLoading(false)
-        return
-      }
-
-      // Get user
+      // Get user first
       const {
         data: { user },
+        error: userError,
       } = await supabase.auth.getUser()
 
-      if (!user) {
+      if (userError || !user) {
         setMessage("You must be logged in to sell books")
         setIsLoading(false)
         return
       }
 
-      // Get public URL
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from("book-images").getPublicUrl(imageName)
+      let imageUrl = null
+
+      // Upload image if provided
+      if (form.image) {
+        const fileExt = form.image.name.split(".").pop()
+        const fileName = `${user.id}_${Date.now()}.${fileExt}`
+
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from("book-images")
+          .upload(fileName, form.image, {
+            cacheControl: "3600",
+            upsert: false,
+          })
+
+        if (uploadError) {
+          console.error("Upload error:", uploadError)
+          setMessage("Failed to upload image. Please try again.")
+          setIsLoading(false)
+          return
+        }
+
+        // Get public URL
+        const { data: urlData } = supabase.storage.from("book-images").getPublicUrl(fileName)
+
+        imageUrl = urlData.publicUrl
+      }
 
       // Insert book record
-      const { error: insertError } = await supabase.from("books").insert([
-        {
-          title: form.title.trim(),
-          author: form.author.trim(),
-          price: Number.parseFloat(form.price),
-          category: form.category,
-          condition: form.condition,
-          description: form.description.trim(),
-          contact_number: form.contact.trim(),
-          image_url: publicUrl,
-          user_id: user.id,
-        },
-      ])
+      const { data: bookData, error: insertError } = await supabase
+        .from("books")
+        .insert([
+          {
+            title: form.title.trim(),
+            author: form.author.trim(),
+            price: Number.parseFloat(form.price),
+            category: form.category,
+            condition: form.condition,
+            description: form.description.trim() || null,
+            contact_number: form.contact.trim(),
+            image_url: imageUrl,
+            user_id: user.id,
+          },
+        ])
+        .select()
 
       if (insertError) {
-        setMessage("Failed to add book. Please try again.")
         console.error("Insert error:", insertError)
+        setMessage("Failed to add book. Please try again.")
       } else {
-        setMessage("Book added successfully! 🎉")
+        setMessage("🎉 Book added successfully! Redirecting to browse page...")
+
         // Reset form
         setForm({
           title: "",
@@ -157,8 +198,8 @@ const SellBooks = () => {
         }, 2000)
       }
     } catch (error) {
+      console.error("Unexpected error:", error)
       setMessage("An unexpected error occurred. Please try again.")
-      console.error("Error:", error)
     } finally {
       setIsLoading(false)
     }
@@ -169,18 +210,18 @@ const SellBooks = () => {
     visible: {
       opacity: 1,
       transition: {
-        duration: 0.6,
-        staggerChildren: 0.1,
+        duration: 0.3,
+        staggerChildren: 0.05,
       },
     },
   }
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 10 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5 },
+      transition: { duration: 0.3 },
     },
   }
 
@@ -201,8 +242,8 @@ const SellBooks = () => {
           <motion.button
             className="back-btn"
             onClick={() => navigate("/")}
-            whileHover={{ scale: 1.05, x: -5 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
             ← Back to Home
           </motion.button>
@@ -376,8 +417,8 @@ const SellBooks = () => {
                 type="submit"
                 className="submit-btn"
                 disabled={isLoading}
-                whileHover={{ scale: isLoading ? 1 : 1.02 }}
-                whileTap={{ scale: isLoading ? 1 : 0.98 }}
+                whileHover={{ scale: isLoading ? 1 : 1.01 }}
+                whileTap={{ scale: isLoading ? 1 : 0.99 }}
               >
                 {isLoading ? (
                   <div className="loading-content">

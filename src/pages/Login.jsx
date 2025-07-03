@@ -97,7 +97,7 @@ function Login() {
             </div>
 
             <div className="form-header">
-              <h2 className="form-title">Welcome Back</h2>
+              <h2 className="fom-title">Welcome Back</h2>
               <p className="form-subtitle">Sign in to continue your book trading journey</p>
             </div>
 

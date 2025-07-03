@@ -53,13 +53,14 @@
   animation-delay: 4s;
 }
 
+/* Simplified animations */
 @keyframes shapeFloat {
   0%,
   100% {
-    transform: translateY(0) rotate(0deg);
+    transform: translateY(0);
   }
   50% {
-    transform: translateY(-100px) rotate(180deg);
+    transform: translateY(-15px);
   }
 }
 
@@ -574,6 +575,13 @@
   color: #667eea;
 }
 
+/* Faster transitions */
+.book-image-container img,
+.contact-btn,
+.related-book-card {
+  transition: all 0.2s ease;
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
   .book-main-details {
@@ -593,6 +601,26 @@
 
   .book-price {
     font-size: 2rem;
+  }
+}
+
+/* Remove heavy effects on mobile */
+@media (max-width: 768px) {
+  .floating-shapes {
+    display: none;
+  }
+
+  .background-elements {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+  }
+
+  .book-image-container,
+  .book-meta,
+  .book-description,
+  .contact-section,
+  .related-book-card {
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.08);
   }
 }
 
@@ -641,5 +669,14 @@
 
   .form-actions {
     flex-direction: column;
+  }
+}
+
+/* Optimize for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

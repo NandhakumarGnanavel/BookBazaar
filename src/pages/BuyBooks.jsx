@@ -100,23 +100,24 @@ const BuyBooks = () => {
     setFavorites((prev) => (prev.includes(bookId) ? prev.filter((id) => id !== bookId) : [...prev, bookId]))
   }
 
+  // Simplify animations
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        duration: 0.6,
-        staggerChildren: 0.1,
+        duration: 0.3,
+        staggerChildren: 0.03,
       },
     },
   }
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 10 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5 },
+      transition: { duration: 0.3 },
     },
   }
 
@@ -294,18 +295,19 @@ const BuyBooks = () => {
             >
               <AnimatePresence>
                 {filteredBooks.map((book, index) => (
+                  // Simplify book card animations
                   <motion.div
                     key={book.id}
                     className="book-card"
                     variants={itemVariants}
                     layout
-                    initial={{ opacity: 0, scale: 0.8 }}
+                    initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
                     whileHover={{
-                      scale: 1.03,
-                      y: -10,
-                      transition: { duration: 0.3 },
+                      scale: 1.02,
+                      y: -5,
+                      transition: { duration: 0.2 },
                     }}
                     onClick={() => navigate(`/book/${book.id}`)}
                   >

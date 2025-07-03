@@ -74,18 +74,18 @@ const Home = () => {
     visible: {
       opacity: 1,
       transition: {
-        duration: 0.6,
-        staggerChildren: 0.1,
+        duration: 0.3,
+        staggerChildren: 0.05,
       },
     },
   }
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 15 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5 },
+      transition: { duration: 0.3 },
     },
   }
 
@@ -101,7 +101,7 @@ const Home = () => {
           <div className="shape shape-5"></div>
         </div>
         <div className="particle-field">
-          {[...Array(20)].map((_, i) => (
+          {[...Array(8)].map((_, i) => (
             <div key={i} className={`particle particle-${i + 1}`}></div>
           ))}
         </div>
@@ -252,7 +252,7 @@ const Home = () => {
             </h1>
             <p>
               Join thousands of book lovers trading, buying, and selling books in their local community. Find rare gems,
-              bestsellers, and hidden treasures .
+              bestsellers, and hidden treasures at amazing prices.
             </p>
           </motion.div>
 
@@ -267,7 +267,7 @@ const Home = () => {
             </div>
             <div className="stat-item">
               <div className="stat-number">00+</div>
-              <div className="stat-label">Whole Tamilnadu</div>
+              <div className="stat-label">Cities</div>
             </div>
           </motion.div>
 
@@ -275,8 +275,8 @@ const Home = () => {
             <motion.button
               className="cta-btn primary"
               onClick={() => navigate("/buy")}
-              whileHover={{ scale: 1.05, y: -3 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
             >
               <span>🛒 Start Shopping</span>
               <div className="btn-glow"></div>
@@ -376,9 +376,9 @@ const Home = () => {
               className="book-card"
               variants={itemVariants}
               whileHover={{
-                scale: 1.05,
-                y: -10,
-                transition: { duration: 0.3 },
+                scale: 1.02,
+                y: -5,
+                transition: { duration: 0.2 },
               }}
               onClick={() => navigate(`/book/${book.id}`)}
               custom={index}
