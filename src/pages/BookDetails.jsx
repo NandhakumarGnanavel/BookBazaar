@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { supabase } from "../supabaseClient"
-import { motion } from "framer-motion"
 import "./BookDetails.css"
 
 const BookDetails = () => {
@@ -16,13 +15,28 @@ const BookDetails = () => {
   const [chatMessage, setChatMessage] = useState("")
   const [isFavorite, setIsFavorite] = useState(false)
   const [relatedBooks, setRelatedBooks] = useState([])
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
-    if (id) {
+    const checkUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!user) {
+        navigate("/login")
+        return
+      }
+      setUser(user)
+    }
+    checkUser()
+  }, [navigate])
+
+  useEffect(() => {
+    if (id && user) {
       fetchBook()
       fetchRelatedBooks()
     }
-  }, [id])
+  }, [id, user])
 
   const fetchBook = async () => {
     setLoading(true)
@@ -66,7 +80,6 @@ const BookDetails = () => {
 
   const handleSendMessage = () => {
     if (chatMessage.trim()) {
-      // In a real app, this would send a message to the seller
       alert(`Message sent to seller: "${chatMessage}"`)
       setChatMessage("")
       setShowContact(false)
@@ -75,7 +88,6 @@ const BookDetails = () => {
 
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite)
-    // In a real app, this would save to user's favorites
   }
 
   const handleCallSeller = () => {
@@ -92,9 +104,14 @@ const BookDetails = () => {
     }
   }
 
+  if (!user) {
+    return null
+  }
+
   if (loading) {
     return (
       <div className="book-details-wrapper">
+        <div className="details-bg"></div>
         <div className="loading-container">
           <div className="loading-spinner"></div>
           <p>Loading book details...</p>
@@ -106,18 +123,14 @@ const BookDetails = () => {
   if (!book) {
     return (
       <div className="book-details-wrapper">
+        <div className="details-bg"></div>
         <div className="error-container">
           <div className="error-icon">📚</div>
           <h2>Book Not Found</h2>
           <p>The book you're looking for doesn't exist or has been removed.</p>
-          <motion.button
-            className="back-btn"
-            onClick={() => navigate("/buy")}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Browse Other Books
-          </motion.button>
+          <button className="back-btn" onClick={() => navigate("/buy")}>
+            <span>Browse Other Books</span>
+          </button>
         </div>
       </div>
     )
@@ -125,56 +138,29 @@ const BookDetails = () => {
 
   return (
     <div className="book-details-wrapper">
-      {/* Background Elements */}
-      <div className="background-elements">
-        <div className="floating-shapes">
-          <div className="shape shape-1"></div>
-          <div className="shape shape-2"></div>
-        </div>
-      </div>
-
-      {/* Header */}
-      <motion.header className="details-header" initial={{ y: -50, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
+      <div className="details-bg"></div>
+      {/* Ultra-Modern Header */}
+      <header className="details-header">
         <div className="header-content">
-          <motion.button
-            className="back-btn"
-            onClick={() => navigate("/buy")}
-            whileHover={{ scale: 1.05, x: -5 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            ← Back to Browse
-          </motion.button>
-          <motion.button
-            className={`favorite-btn ${isFavorite ? "active" : ""}`}
-            onClick={toggleFavorite}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            {isFavorite ? "❤️" : "🤍"} {isFavorite ? "Saved" : "Save"}
-          </motion.button>
+          <button className="back-btn" onClick={() => navigate("/buy")}>
+            <span>← Back to Browse</span>
+          </button>
+          <button className={`favorite-btn ${isFavorite ? "active" : ""}`} onClick={toggleFavorite}>
+            <span>{isFavorite ? "❤️ Saved" : "🤍 Save"}</span>
+          </button>
         </div>
-      </motion.header>
+      </header>
 
       <div className="book-details-content">
-        {/* Main Book Details */}
-        <motion.div
-          className="book-main-details"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
+        {/* Ultra-Modern Main Book Details */}
+        <div className="book-main-details">
           <div className="book-image-section">
             <div className="book-image-container">
               <img src={book.image_url || "/placeholder.svg"} alt={book.title} />
               <div className="image-overlay">
-                <motion.button
-                  className="zoom-btn"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={() => window.open(book.image_url, "_blank")}
-                >
-                  🔍 View Full Size
-                </motion.button>
+                <button className="zoom-btn" onClick={() => window.open(book.image_url, "_blank")}>
+                  <span>🔍 View Full Size</span>
+                </button>
               </div>
             </div>
           </div>
@@ -187,69 +173,49 @@ const BookDetails = () => {
 
             <div className="book-meta">
               <div className="meta-item">
-                <span className="meta-label">✍️ Author:</span>
+                <span className="meta-label">Author:</span>
                 <span className="meta-value">{book.author}</span>
               </div>
               {book.category && (
                 <div className="meta-item">
-                  <span className="meta-label">📂 Category:</span>
+                  <span className="meta-label">Category:</span>
                   <span className="meta-value">{book.category}</span>
                 </div>
               )}
               {book.condition && (
                 <div className="meta-item">
-                  <span className="meta-label">📋 Condition:</span>
+                  <span className="meta-label">Condition:</span>
                   <span className="meta-value condition">{book.condition}</span>
                 </div>
               )}
               <div className="meta-item">
-                <span className="meta-label">📅 Listed:</span>
+                <span className="meta-label">Listed:</span>
                 <span className="meta-value">{new Date(book.created_at).toLocaleDateString()}</span>
               </div>
             </div>
 
             {book.description && (
               <div className="book-description">
-                <h3>📝 Description</h3>
+                <h3>Description</h3>
                 <p>{book.description}</p>
               </div>
             )}
 
             <div className="contact-section">
-              <h3>📞 Contact Seller</h3>
+              <h3>Contact Seller</h3>
               <div className="contact-actions">
-                <motion.button
-                  className="contact-btn primary"
-                  onClick={handleWhatsApp}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  💬 WhatsApp
-                </motion.button>
-                <motion.button
-                  className="contact-btn secondary"
-                  onClick={handleCallSeller}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  📞 Call
-                </motion.button>
-                <motion.button
-                  className="contact-btn tertiary"
-                  onClick={handleContactSeller}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  ✉️ Message
-                </motion.button>
+                <button className="contact-btn primary" onClick={handleWhatsApp}>
+                  <span>WhatsApp</span>
+                </button>
+                <button className="contact-btn secondary" onClick={handleCallSeller}>
+                  <span>Call</span>
+                </button>
+                <button className="contact-btn tertiary" onClick={handleContactSeller}>
+                  <span>Message</span>
+                </button>
               </div>
               {showContact && (
-                <motion.div
-                  className="contact-form"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  transition={{ duration: 0.3 }}
-                >
+                <div className="contact-form">
                   <textarea
                     value={chatMessage}
                     onChange={(e) => setChatMessage(e.target.value)}
@@ -257,39 +223,28 @@ const BookDetails = () => {
                     rows="4"
                   />
                   <div className="form-actions">
-                    <motion.button
-                      className="send-btn"
-                      onClick={handleSendMessage}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Send Message
-                    </motion.button>
+                    <button className="send-btn" onClick={handleSendMessage}>
+                      <span>Send Message</span>
+                    </button>
                     <button className="cancel-btn" onClick={() => setShowContact(false)}>
-                      Cancel
+                      <span>Cancel</span>
                     </button>
                   </div>
-                </motion.div>
+                </div>
               )}
             </div>
           </div>
-        </motion.div>
+        </div>
 
-        {/* Related Books */}
+        {/* Ultra-Modern Related Books */}
         {relatedBooks.length > 0 && (
-          <motion.section
-            className="related-books"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <h2>📚 More Books You Might Like</h2>
+          <section className="related-books">
+            <h2>More Books You Might Like</h2>
             <div className="related-books-grid">
               {relatedBooks.map((relatedBook) => (
-                <motion.div
+                <div
                   key={relatedBook.id}
                   className="related-book-card"
-                  whileHover={{ scale: 1.03, y: -5 }}
                   onClick={() => navigate(`/book/${relatedBook.id}`)}
                 >
                   <div className="related-book-image">
@@ -300,10 +255,10 @@ const BookDetails = () => {
                     <p>{relatedBook.author}</p>
                     <span className="related-book-price">₹{relatedBook.price}</span>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
-          </motion.section>
+          </section>
         )}
       </div>
     </div>

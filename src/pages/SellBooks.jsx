@@ -46,7 +46,6 @@ const SellBooks = () => {
     if (name === "image" && files && files[0]) {
       const file = files[0]
 
-      // Validate file
       const fileError = validateFile(file)
       if (fileError) {
         setErrors({ ...errors, [name]: fileError })
@@ -55,7 +54,6 @@ const SellBooks = () => {
 
       setForm({ ...form, [name]: file })
 
-      // Create preview
       const reader = new FileReader()
       reader.onload = (e) => setImagePreview(e.target.result)
       reader.readAsDataURL(file)
@@ -63,7 +61,6 @@ const SellBooks = () => {
       setForm({ ...form, [name]: value })
     }
 
-    // Clear error for this field
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" })
     }
@@ -80,7 +77,6 @@ const SellBooks = () => {
     if (!form.contact.trim()) newErrors.contact = "Contact number is required"
     if (!form.image) newErrors.image = "Book image is required"
 
-    // Validate contact number (basic validation)
     if (form.contact && !/^\d{10}$/.test(form.contact.replace(/\D/g, ""))) {
       newErrors.contact = "Please enter a valid 10-digit phone number"
     }
@@ -90,7 +86,7 @@ const SellBooks = () => {
   }
 
   const validateFile = (file) => {
-    const maxSize = 5 * 1024 * 1024 // 5MB
+    const maxSize = 5 * 1024 * 1024
     const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"]
 
     if (file.size > maxSize) {
@@ -116,7 +112,6 @@ const SellBooks = () => {
     setMessage("")
 
     try {
-      // Get user first
       const {
         data: { user },
         error: userError,
@@ -130,7 +125,6 @@ const SellBooks = () => {
 
       let imageUrl = null
 
-      // Upload image if provided
       if (form.image) {
         const fileExt = form.image.name.split(".").pop()
         const fileName = `${user.id}_${Date.now()}.${fileExt}`
@@ -149,13 +143,10 @@ const SellBooks = () => {
           return
         }
 
-        // Get public URL
         const { data: urlData } = supabase.storage.from("book-images").getPublicUrl(fileName)
-
         imageUrl = urlData.publicUrl
       }
 
-      // Insert book record
       const { data: bookData, error: insertError } = await supabase
         .from("books")
         .insert([
@@ -179,7 +170,6 @@ const SellBooks = () => {
       } else {
         setMessage("🎉 Book added successfully! Redirecting to browse page...")
 
-        // Reset form
         setForm({
           title: "",
           author: "",
@@ -192,7 +182,6 @@ const SellBooks = () => {
         })
         setImagePreview(null)
 
-        // Redirect after success
         setTimeout(() => {
           navigate("/buy")
         }, 2000)
@@ -227,28 +216,14 @@ const SellBooks = () => {
 
   return (
     <div className="sell-books-wrapper">
-      {/* Background Elements */}
-      <div className="background-elements">
-        <div className="floating-shapes">
-          <div className="shape shape-1"></div>
-          <div className="shape shape-2"></div>
-          <div className="shape shape-3"></div>
-        </div>
-      </div>
-
       {/* Header */}
-      <motion.header className="sell-header" initial={{ y: -50, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
+      <motion.header className="sell-header" initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
         <div className="header-content">
-          <motion.button
-            className="back-btn"
-            onClick={() => navigate("/")}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            ← Back to Home
-          </motion.button>
+        <button className="back-btn" onClick={() => navigate("/")}>
+            <span>← Back to Home</span>
+          </button>
           <div className="header-info">
-            <h1>💰 Sell Your Books</h1>
+            <h1>Sell Your Books</h1>
             <p>Turn your old books into cash and help other readers discover great stories</p>
           </div>
         </div>
@@ -257,14 +232,14 @@ const SellBooks = () => {
       <div className="sell-content">
         <motion.div className="sell-form-container" variants={containerVariants} initial="hidden" animate="visible">
           <motion.div className="form-header" variants={itemVariants}>
-            <h2>📚 Add Your Book</h2>
+            <h2>Add Your Book</h2>
             <p>Fill in the details below to list your book for sale</p>
           </motion.div>
 
           <form onSubmit={handleSubmit} className="sell-form">
             {/* Image Upload */}
             <motion.div className="form-group image-upload-group" variants={itemVariants}>
-              <label>📸 Book Image *</label>
+              <label>Book Image *</label>
               <div className="image-upload-container">
                 <input
                   type="file"
@@ -297,7 +272,7 @@ const SellBooks = () => {
             {/* Title and Author */}
             <div className="form-row">
               <motion.div className="form-group" variants={itemVariants}>
-                <label htmlFor="title">📖 Book Title *</label>
+                <label htmlFor="title">Book Title *</label>
                 <input
                   type="text"
                   id="title"
@@ -311,7 +286,7 @@ const SellBooks = () => {
               </motion.div>
 
               <motion.div className="form-group" variants={itemVariants}>
-                <label htmlFor="author">✍️ Author *</label>
+                <label htmlFor="author">Author *</label>
                 <input
                   type="text"
                   id="author"
@@ -328,7 +303,7 @@ const SellBooks = () => {
             {/* Price and Category */}
             <div className="form-row">
               <motion.div className="form-group" variants={itemVariants}>
-                <label htmlFor="price">💰 Price (₹) *</label>
+                <label htmlFor="price">Price (₹) *</label>
                 <input
                   type="number"
                   id="price"
@@ -343,7 +318,7 @@ const SellBooks = () => {
               </motion.div>
 
               <motion.div className="form-group" variants={itemVariants}>
-                <label htmlFor="category">📂 Category *</label>
+                <label htmlFor="category">Category *</label>
                 <select
                   id="category"
                   name="category"
@@ -364,7 +339,7 @@ const SellBooks = () => {
 
             {/* Condition */}
             <motion.div className="form-group" variants={itemVariants}>
-              <label>📋 Book Condition *</label>
+              <label>Book Condition *</label>
               <div className="condition-options">
                 {conditions.map((condition) => (
                   <label key={condition} className="condition-option">
@@ -384,7 +359,7 @@ const SellBooks = () => {
 
             {/* Description */}
             <motion.div className="form-group" variants={itemVariants}>
-              <label htmlFor="description">📝 Description (Optional)</label>
+              <label htmlFor="description">Description (Optional)</label>
               <textarea
                 id="description"
                 name="description"
@@ -397,7 +372,7 @@ const SellBooks = () => {
 
             {/* Contact */}
             <motion.div className="form-group" variants={itemVariants}>
-              <label htmlFor="contact">📞 Contact Number *</label>
+              <label htmlFor="contact">Contact Number *</label>
               <input
                 type="tel"
                 id="contact"
@@ -427,7 +402,7 @@ const SellBooks = () => {
                   </div>
                 ) : (
                   <div className="submit-content">
-                    <span>🚀 List My Book</span>
+                    <span>List My Book</span>
                   </div>
                 )}
               </motion.button>
@@ -437,9 +412,9 @@ const SellBooks = () => {
             {message && (
               <motion.div
                 className={`message ${message.includes("successfully") ? "success" : "error"}`}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.3 }}
               >
                 {message}
               </motion.div>
@@ -450,12 +425,12 @@ const SellBooks = () => {
         {/* Tips Sidebar */}
         <motion.aside
           className="tips-sidebar"
-          initial={{ x: 300, opacity: 0 }}
+          initial={{ x: 20, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
         >
           <div className="tips-container">
-            <h3>💡 Selling Tips</h3>
+            <h3>Selling Tips</h3>
             <div className="tip-item">
               <div className="tip-icon">📸</div>
               <div className="tip-content">

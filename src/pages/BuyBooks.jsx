@@ -29,6 +29,9 @@ const BuyBooks = () => {
     "Science",
     "Biography",
     "Self-Help",
+    "History",
+    "Philosophy",
+    "Poetry",
   ]
 
   useEffect(() => {
@@ -100,7 +103,6 @@ const BuyBooks = () => {
     setFavorites((prev) => (prev.includes(bookId) ? prev.filter((id) => id !== bookId) : [...prev, bookId]))
   }
 
-  // Simplify animations
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -123,44 +125,30 @@ const BuyBooks = () => {
 
   return (
     <div className="buy-books-wrapper">
-      {/* Background Elements */}
-      <div className="background-elements">
-        <div className="floating-shapes">
-          <div className="shape shape-1"></div>
-          <div className="shape shape-2"></div>
-          <div className="shape shape-3"></div>
-        </div>
-      </div>
-
       {/* Header */}
-      <motion.header className="buy-header" initial={{ y: -50, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
+      <motion.header className="buy-header" initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
         <div className="header-content">
-          <motion.button
-            className="back-btn"
-            onClick={() => navigate("/")}
-            whileHover={{ scale: 1.05, x: -5 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            ← Back to Home
-          </motion.button>
+        <button className="back-btn" onClick={() => navigate("/")}>
+            <span>← Back to Home</span>
+          </button>
           <div className="header-info">
-            <h1>📚 Browse Books</h1>
+            <h1>Browse Books</h1>
             <p>Discover amazing books from our community</p>
           </div>
           <div className="view-controls">
             <motion.button
               className={`view-btn ${viewMode === "grid" ? "active" : ""}`}
               onClick={() => setViewMode("grid")}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               ⊞
             </motion.button>
             <motion.button
               className={`view-btn ${viewMode === "list" ? "active" : ""}`}
               onClick={() => setViewMode("list")}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               ☰
             </motion.button>
@@ -172,12 +160,12 @@ const BuyBooks = () => {
         {/* Filters Sidebar */}
         <motion.aside
           className="filters-sidebar"
-          initial={{ x: -300, opacity: 0 }}
+          initial={{ x: -20, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.4 }}
         >
           <div className="filter-section">
-            <h3>🔍 Search</h3>
+            <h3>Search</h3>
             <div className="search-container">
               <input
                 type="text"
@@ -190,15 +178,15 @@ const BuyBooks = () => {
           </div>
 
           <div className="filter-section">
-            <h3>📂 Categories</h3>
+            <h3>Categories</h3>
             <div className="category-list">
               {categories.map((category) => (
                 <motion.button
                   key={category}
                   className={`category-btn ${selectedCategory === category ? "active" : ""}`}
                   onClick={() => setSelectedCategory(category)}
-                  whileHover={{ scale: 1.02, x: 5 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.99 }}
                 >
                   {category === "all" ? "All Categories" : category}
                 </motion.button>
@@ -207,7 +195,7 @@ const BuyBooks = () => {
           </div>
 
           <div className="filter-section">
-            <h3>💰 Price Range</h3>
+            <h3>Price Range</h3>
             <div className="price-range">
               <div className="price-inputs">
                 <input
@@ -231,7 +219,7 @@ const BuyBooks = () => {
           </div>
 
           <div className="filter-section">
-            <h3>🔄 Sort By</h3>
+            <h3>Sort By</h3>
             <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="sort-select">
               <option value="newest">Newest First</option>
               <option value="oldest">Oldest First</option>
@@ -249,8 +237,8 @@ const BuyBooks = () => {
               setPriceRange([0, 10000])
               setSortBy("newest")
             }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
             Clear All Filters
           </motion.button>
@@ -260,9 +248,9 @@ const BuyBooks = () => {
         <main className="books-main">
           <motion.div
             className="results-header"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.2 }}
           >
             <div className="results-info">
               <h2>
@@ -295,7 +283,6 @@ const BuyBooks = () => {
             >
               <AnimatePresence>
                 {filteredBooks.map((book, index) => (
-                  // Simplify book card animations
                   <motion.div
                     key={book.id}
                     className="book-card"
@@ -306,7 +293,7 @@ const BuyBooks = () => {
                     exit={{ opacity: 0, scale: 0.95 }}
                     whileHover={{
                       scale: 1.02,
-                      y: -5,
+                      y: -2,
                       transition: { duration: 0.2 },
                     }}
                     onClick={() => navigate(`/book/${book.id}`)}
@@ -320,10 +307,10 @@ const BuyBooks = () => {
                             e.stopPropagation()
                             navigate(`/book/${book.id}`)
                           }}
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                         >
-                          👁️ Quick View
+                          Quick View
                         </motion.button>
                       </div>
                       <motion.button
@@ -332,8 +319,8 @@ const BuyBooks = () => {
                           e.stopPropagation()
                           toggleFavorite(book.id)
                         }}
-                        whileHover={{ scale: 1.2 }}
-                        whileTap={{ scale: 0.8 }}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
                       >
                         {favorites.includes(book.id) ? "❤️" : "🤍"}
                       </motion.button>
@@ -347,8 +334,8 @@ const BuyBooks = () => {
                       <p className="book-author">by {book.author}</p>
                       {book.category && <span className="book-category">{book.category}</span>}
                       <div className="book-meta">
-                        <span className="book-date">📅 {new Date(book.created_at).toLocaleDateString()}</span>
-                        <span className="book-contact">📞 Contact Available</span>
+                        <span className="book-date">{new Date(book.created_at).toLocaleDateString()}</span>
+                        <span className="book-contact">Contact Available</span>
                       </div>
                     </div>
 
@@ -359,10 +346,10 @@ const BuyBooks = () => {
                           e.stopPropagation()
                           navigate(`/book/${book.id}`)
                         }}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                       >
-                        💬 Contact Seller
+                        Contact Seller
                       </motion.button>
                     </div>
                   </motion.div>
@@ -375,9 +362,9 @@ const BuyBooks = () => {
           {!loading && filteredBooks.length === 0 && (
             <motion.div
               className="no-results"
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.4 }}
             >
               <div className="no-results-icon">📚</div>
               <h3>No books found</h3>
@@ -389,8 +376,8 @@ const BuyBooks = () => {
                   setSelectedCategory("all")
                   setPriceRange([0, 10000])
                 }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
                 Browse All Books
               </motion.button>

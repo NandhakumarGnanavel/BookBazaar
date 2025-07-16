@@ -4,9 +4,6 @@ import { useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
 import { supabase } from "../supabaseClient"
 import "./AuthPage.css"
-import Lottie from "lottie-react"
-import loginAnimation from "../animations/login-animation.json"
-import loginLeftAnimation from "../animations/login-left-animation.json"
 
 function Register() {
   const [email, setEmail] = useState("")
@@ -55,14 +52,9 @@ function Register() {
       if (error) {
         setErrorMsg(error.message)
       } else {
-        // Add success animation
-        document.querySelector(".marketplace-container").classList.add("success")
-
-        // Show success message
         alert(
           "🎉 Welcome to BookSwap! Please check your email to verify your account and start trading books with your community.",
         )
-
         setTimeout(() => {
           navigate("/")
         }, 1000)
@@ -76,58 +68,34 @@ function Register() {
 
   return (
     <div className="auth-container">
-      {/* Advanced particle system */}
-      <div className="particle-system">
-        <div className="particle"></div>
-        <div className="particle"></div>
-        <div className="particle"></div>
-        <div className="particle"></div>
-        <div className="particle"></div>
-        <div className="particle"></div>
-        <div className="particle"></div>
-        <div className="particle"></div>
-        <div className="particle"></div>
-        <div className="particle"></div>
-      </div>
-
-      {/* Advanced mesh gradient overlay */}
-      <div className="mesh-gradient"></div>
-
-      <div className="marketplace-container">
-        {/* Left side - Branding with Lottie */}
+      <div className="auth-content">
+        {/* Left side - Branding */}
         <div className="brand-section">
-          <div className="lottie-left">
-            <Lottie animationData={loginLeftAnimation} loop={true} />
-          </div>
-          <h1 className="brand-title">BookSwap</h1>
-          <p className="brand-subtitle">
-            Join thousands of book lovers who trade, buy, and sell books in their local community.
-          </p>
-          <div className="features-list">
-            <div className="feature-item">
-              <span className="feature-icon">🆓</span>
-              <span>No platform fees ever</span>
-            </div>
-            <div className="feature-item">
-              <span className="feature-icon">📱</span>
-              <span>Easy ad posting & browsing</span>
-            </div>
-            <div className="feature-item">
-              <span className="feature-icon">🌍</span>
-              <span>Connect with local readers</span>
+          <div className="brand-content">
+            <h1 className="brand-title">BookSwap</h1>
+            <p className="brand-subtitle">
+              Join thousands of book lovers who trade, buy, and sell books in their local community.
+            </p>
+            <div className="features-list">
+              <div className="feature-item">
+                <span className="feature-icon">🆓</span>
+                <span>No platform fees ever</span>
+              </div>
+              <div className="feature-item">
+                <span className="feature-icon">📱</span>
+                <span>Easy ad posting & browsing</span>
+              </div>
+              <div className="feature-item">
+                <span className="feature-icon">🌍</span>
+                <span>Connect with local readers</span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Right side - Register form with Lottie */}
+        {/* Right side - Register form */}
         <div className="form-section">
-          <form onSubmit={handleRegister} className={`auth-form ${isLoading ? "loading" : ""}`}>
-            <div className="lottie-center-top">
-              <div className="lottie-animation">
-                <Lottie animationData={loginAnimation} loop={true} />
-              </div>
-            </div>
-
+          <form onSubmit={handleRegister} className="auth-form">
             <div className="form-header">
               <h2 className="form-title">Join BookSwap</h2>
               <p className="form-subtitle">Create your free account and start trading books today</p>
