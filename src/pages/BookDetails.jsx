@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { supabase } from "../supabaseClient"
 import "./BookDetails.css"
+import ChatPage from './ChatPage';
 
 const BookDetails = () => {
   const { id } = useParams()
@@ -74,9 +75,10 @@ const BookDetails = () => {
     }
   }
 
-  const handleContactSeller = () => {
-    setShowContact(true)
-  }
+  
+const handleContactSeller = () => {
+  navigate(`/chat/${id}`)
+}
 
   const handleSendMessage = () => {
     if (chatMessage.trim()) {

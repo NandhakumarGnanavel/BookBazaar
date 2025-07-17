@@ -1,4 +1,3 @@
-/* Ultra-Modern BookSwap - Next-Gen Design with Advanced Effects */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
 
 * {
@@ -229,7 +228,7 @@ body {
 }
 
 .navbar-container {
-  max-width: 1400px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: 1.5rem 2rem;
   display: flex;
@@ -1165,8 +1164,8 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 4rem;
+  grid-template-columns: repeat(auto-fit, minmax(00px, 1fr));
+  gap: 0rem;
   position: relative;
   z-index: 2;
 }

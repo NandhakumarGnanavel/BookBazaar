@@ -6,6 +6,10 @@ import BuyBooks from "./pages/BuyBooks"
 import SellBooks from "./pages/SellBooks"
 import BookDetails from "./pages/BookDetails"
 import Profile from "./pages/Profile"
+import ChatPage from "./pages/ChatPage"
+
+// Extract ErrorBoundary from ChatPage
+import { ErrorBoundary } from "./pages/ChatPage"
 
 function App() {
   return (
@@ -19,6 +23,14 @@ function App() {
           <Route path="/sell" element={<SellBooks />} />
           <Route path="/book/:id" element={<BookDetails />} />
           <Route path="/profile" element={<Profile />} />
+          <Route 
+            path="/chat/:id" 
+            element={
+              <ErrorBoundary>
+                <ChatPage />
+              </ErrorBoundary>
+            } 
+          />
         </Routes>
       </div>
     </Router>
