@@ -1419,3 +1419,119 @@ body {
   z-index: -1;
   opacity: 0.5;
 }
+
+/* Retain existing designs, hover effects, animations, and desktop view */
+
+/* 📱 MOBILE-ONLY FIXES */
+@media (max-width: 768px) {
+  .navbar-container {
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .logo {
+    align-self: flex-start;
+  }
+
+  .profile-icon {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
+  }
+
+  .nav-actions {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .nav-btn {
+    width: 90%;
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .hero {
+    padding: 2rem 1rem;
+    text-align: center;
+    flex-direction: column;
+  }
+
+  .hero-text h1 {
+    font-size: 1.8rem;
+    line-height: 2.4rem;
+  }
+
+  .hero-text p {
+    font-size: 1rem;
+    margin-top: 1rem;
+  }
+
+  .hero-stats {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .hero-stats .stat-box {
+    width: 90%;
+    padding: 1rem;
+    font-size: 1.1rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+
+  .cta-btn,
+  .contact-btn,
+  .view-all-btn {
+    width: 90%;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
+  }
+
+  .books-grid {
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
+    gap: 1.5rem;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+  }
+
+  .footer-section {
+    width: 100%;
+  }
+
+  .profile-dropdown {
+    position: absolute;
+    right: 0.5rem;
+    top: 60px;
+    width: 90vw;
+    z-index: 999;
+  }
+}
+
+  
